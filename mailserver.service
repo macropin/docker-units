@@ -1,6 +1,6 @@
 [Unit]
 Description=Mail Server
-Requires=docker.service mariadb.service
+Requires=docker.service
 After=docker.service mariadb.service
 
 [Service]
@@ -19,4 +19,4 @@ ExecStart=/usr/bin/docker run --rm --env-file=/mnt/environment/%p.env -p 25:25 -
 ExecStop=/usr/bin/docker stop -t 10 %p
 
 [Install]
-WantedBy=local.target
+WantedBy=multi-user.target
