@@ -1,0 +1,15 @@
+[Unit]
+Description=Roundcube Service
+Requires=docker.service
+After=docker.service mariadb.service mailserver.service
+
+[Service]
+Restart=on-failure
+RestartSec=10
+ExecStartPre=-/usr/bin/docker kill %p
+ExecStartPre=-/usr/bin/docker rm %p
+ExecStart=/usr/bin/docker run --rm --env-file=/mnt/environment/%p.env -p 80:80 --name %p --link mariadb --link mailserver %p
+ExecStop=/usr/bin/docker stop -t 2 %p
+
+[Install]
+WantedBy=multi-user.target
