@@ -1,0 +1,17 @@
+[Unit]
+Description=MariaDB
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=on-failure
+RestartSec=10
+ExecStartPre=/usr/bin/mkdir -p /mnt/data/%p/mysql
+ExecStartPre=/usr/bin/chown 999:999 /mnt/data/%p/mysql
+ExecStartPre=-/usr/bin/docker kill %p
+ExecStartPre=-/usr/bin/docker rm %p
+ExecStart=/usr/bin/docker run --rm --name %p --env-file=/mnt/environment/%p.env -v /mnt/data/%p/mysql:/var/lib/mysql mariadb:10.0
+ExecStop=/usr/bin/docker stop -t 2 %p
+
+[Install]
+WantedBy=local.target

@@ -1,0 +1,15 @@
+[Unit]
+Description=Mail Manager
+Requires=docker.service mariadb.service
+After=docker.service mariadb.service
+
+[Service]
+Restart=on-failure
+RestartSec=10
+ExecStartPre=-/usr/bin/docker kill %p
+ExecStartPre=-/usr/bin/docker rm %p
+ExecStart=/usr/bin/docker run --rm --env-file=/mnt/environment/%p.env -p 8000:8000 --name %p --link mariadb %p
+ExecStop=/usr/bin/docker stop -t 2 %p
+
+[Install]
+WantedBy=local.target
