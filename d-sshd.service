@@ -1,0 +1,16 @@
+[Unit]
+Description=SSHD Service
+Requires=docker.service
+After=docker.service
+
+[Service]
+EnvironmentFile=/mnt/environment/%p.env
+Restart=on-failure
+RestartSec=10
+ExecStartPre=-/usr/bin/docker kill %p
+ExecStartPre=-/usr/bin/docker rm %p
+ExecStart=/usr/bin/docker run --rm --env-file=/mnt/environment/%p.env -v /mnt/data/%p/etc:/etc/ssh:rw -v /mnt/data/secrets/id_rsa.pub:/root/.ssh/authorized_keys:ro -v /mnt/data:/mnt/data:ro -v /mnt/environment:/mnt/environment:ro -p ${SSH_PORT}:22 --name %p quay.io/macropin/sshd
+ExecStop=/usr/bin/docker stop -t 2 %p
+
+[Install]
+WantedBy=multi-user.target
