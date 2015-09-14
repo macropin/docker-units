@@ -6,7 +6,7 @@ Type=oneshot
 Environment="SWAPFILE=/.swapfile"
 RemainAfterExit=true
 ExecStartPre=/usr/bin/touch ${SWAPFILE}
-ExecStartPre=/usr/bin/fallocate -l 512m ${SWAPFILE}
+ExecStartPre=/usr/bin/fallocate -l 1024m ${SWAPFILE}
 ExecStartPre=/usr/bin/chmod 600 ${SWAPFILE}
 ExecStartPre=/usr/sbin/mkswap ${SWAPFILE}
 ExecStartPre=/usr/sbin/losetup -f ${SWAPFILE}
