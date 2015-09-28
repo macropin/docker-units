@@ -6,7 +6,7 @@ After=docker.service mariadb.service
 [Service]
 Restart=on-failure
 RestartSec=10
-EnvironmentFile=/mnt/environment/%p.env
+EnvironmentFile=/mnt/data/%p/environment
 ExecStartPre=/usr/bin/mkdir -p /mnt/data/%p/var/vmail
 ExecStartPre=/usr/bin/chown 5000:5000 /mnt/data/%p/var/vmail
 ExecStartPre=/usr/bin/chmod 700 /mnt/data/%p/var/vmail
@@ -15,7 +15,7 @@ ExecStartPre=/usr/bin/chown 0:12 /mnt/data/%p/var/spool/mail
 ExecStartPre=/usr/bin/chmod 775 /mnt/data/%p/var/spool/mail
 ExecStartPre=-/usr/bin/docker kill %p
 ExecStartPre=-/usr/bin/docker rm %p
-ExecStart=/usr/bin/docker run --rm --env-file=/mnt/environment/%p.env -p 25:25 -p 465:465 -p 587:587 -p 993:993 -p 995:995 --name %p --link mariadb:mariadb -v /mnt/data/%p/var/vmail:/var/vmail -v /mnt/data/%p/var/spool/mail:/var/spool/mail -v /mnt/data/secrets/rapidssl.crt:/etc/pki/tls/certs/ca.crt -v /mnt/data/secrets/${MAILNAME}.crt:/etc/pki/tls/certs/${MAILNAME}.crt -v /mnt/data/secrets/${MAILNAME}.key:/etc/pki/tls/private/${MAILNAME}.key %p
+ExecStart=/usr/bin/docker run --rm --env-file=/mnt/data/%p/environment -p 25:25 -p 465:465 -p 587:587 -p 993:993 -p 995:995 --name %p --link mariadb:mariadb -v /mnt/data/%p/var/vmail:/var/vmail -v /mnt/data/%p/var/spool/mail:/var/spool/mail -v /mnt/data/secrets/rapidssl.crt:/etc/pki/tls/certs/ca.crt -v /mnt/data/secrets/${MAILNAME}.crt:/etc/pki/tls/certs/${MAILNAME}.crt -v /mnt/data/secrets/${MAILNAME}.key:/etc/pki/tls/private/${MAILNAME}.key %p
 ExecStop=/usr/bin/docker stop -t 10 %p
 
 [Install]
