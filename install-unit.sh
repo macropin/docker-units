@@ -2,9 +2,7 @@
 
 set -e
 
-UNITS="$1"
-
-
+UNITS="$*"
 
 for U in $UNITS; do
     echo ">> Installing $U"
