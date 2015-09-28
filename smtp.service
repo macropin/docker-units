@@ -6,11 +6,11 @@ After=docker.service
 [Service]
 Restart=on-failure
 RestartSec=10
-ExecStartPre=/usr/bin/mkdir -p /mnt/data/%p
+ExecStartPre=/usr/bin/mkdir -p /mnt/data/%p/spool
 ExecStartPre=/usr/bin/touch /mnt/data/%p/environment
 ExecStartPre=-/usr/bin/docker kill %p
 ExecStartPre=-/usr/bin/docker rm %p
-ExecStart=/usr/bin/docker run --rm --name %p --env-file=/mnt/data/%p/environment -p 25:25 -p 587:587 panubo/postfix
+ExecStart=/usr/bin/docker run --rm --name %p --env-file=/mnt/data/%p/environment -v /mnt/data/%p/spool:/var/spool/postfix -p 25:25 -p 587:587 panubo/postfix
 ExecStop=/usr/bin/docker stop -t 2 %p
 
 [Install]
