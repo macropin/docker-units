@@ -1,0 +1,17 @@
+[Unit]
+Description=FTP Service
+Requires=docker.service
+After=docker.service apache.service
+
+[Service]
+Restart=on-failure
+RestartSec=10
+ExecStartPre=-/usr/bin/mkdir -p /mnt/data/%p
+ExecStartPre=-/usr/bin/touch /mnt/data/%p/environment
+ExecStartPre=-/usr/bin/docker kill %p
+ExecStartPre=-/usr/bin/docker rm %p
+ExecStart=/usr/bin/docker run --rm --env-file=/mnt/data/%p/environment -v /mnt/data/apache/www:/srv/www -p 21:21 -p 4559:4559 -p 4560:4560 -p 4561:4561 -p 4562:4562 -p 4563:4563 -p 4564:4564 --name %p panubo/vsftpd
+ExecStop=/usr/bin/docker stop -t 2 %p
+
+[Install]
+WantedBy=multi-user.target
