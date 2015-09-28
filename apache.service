@@ -1,0 +1,18 @@
+[Unit]
+Description=Apache PHP Service
+Requires=docker.service
+After=docker.service mariadb.service
+
+[Service]
+Restart=on-failure
+RestartSec=10
+ExecStartPre=-/usr/bin/mkdir -p /mnt/data/%p/www
+ExecStartPre=-/usr/bin/chown 48:48 /mnt/data/%p/www
+ExecStartPre=-/usr/bin/touch /mnt/data/%p/environment
+ExecStartPre=-/usr/bin/docker kill %p
+ExecStartPre=-/usr/bin/docker rm %p
+ExecStart=/usr/bin/docker run --rm --env-file=/mnt/data/%p/environment -v /mnt/data/%p/www:/srv/www -p 80:80 --name %p --link mariadb --link smtp quay.io/panubo/apache-mvh
+ExecStop=/usr/bin/docker stop -t 2 %p
+
+[Install]
+WantedBy=multi-user.target
