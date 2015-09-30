@@ -9,7 +9,7 @@ Restart=on-failure
 RestartSec=10
 ExecStartPre=-/usr/bin/docker kill %p
 ExecStartPre=-/usr/bin/docker rm %p
-ExecStart=/usr/bin/docker run --rm --env-file=/mnt/data/%p/environment -v /mnt/data/secrets/${SERVER_NAME}.key:/etc/ssl/private/${SERVER_NAME}.key:ro -v /mnt/data/secrets/${SERVER_NAME}.crt:/etc/ssl/certs/${SERVER_NAME}.crt:ro -v /mnt/data/secrets/ca.crt:/etc/ssl/certs/ca.crt:ro -p 80:80 -p 443:443 --name %p --link mariadb --link mailserver %p
+ExecStart=/usr/bin/docker run --rm --env-file=/mnt/data/%p/environment -v /mnt/data/secrets/${SERVER_NAME}.key:/etc/ssl/private/${SERVER_NAME}.key:ro -v /mnt/data/secrets/${SERVER_NAME}.crt:/etc/ssl/certs/${SERVER_NAME}.crt:ro -v /mnt/data/secrets/ca.crt:/etc/ssl/certs/ca.crt:ro -p 80:80 -p 443:443 --name %p --link mariadb --link mailserver macropin/roundcube
 ExecStop=/usr/bin/docker stop -t 2 %p
 
 [Install]
