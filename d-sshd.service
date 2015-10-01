@@ -10,7 +10,7 @@ RestartSec=10
 ExecStartPre=/usr/bin/touch /mnt/data/%p/environment
 ExecStartPre=-/usr/bin/docker kill %p
 ExecStartPre=-/usr/bin/docker rm %p
-ExecStart=/usr/bin/docker run --rm --env-file=/mnt/data/%p/environment -v /mnt/data/%p/etc:/etc/ssh:rw -v /mnt/data/secrets/id_rsa.pub:/root/.ssh/authorized_keys:ro -v /mnt/data:/mnt/data:ro -v /mnt/environment:/mnt/environment:ro -p ${SSH_PORT}:22 --name %p quay.io/macropin/sshd
+ExecStart=/usr/bin/docker run --rm --env-file=/mnt/data/%p/environment -v /mnt/data/%p/etc:/etc/ssh:rw -v /mnt/data/secrets/id_rsa.pub:/root/.ssh/authorized_keys:ro -v /mnt/data:/mnt/data:ro -p ${SSH_PORT}:22 --name %p quay.io/macropin/sshd
 ExecStop=/usr/bin/docker stop -t 2 %p
 
 [Install]
