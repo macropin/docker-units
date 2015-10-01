@@ -15,6 +15,6 @@ for U in $UNITS; do
     U=$(basename $U)
     echo ">> Activating $U"
     sudo systemctl enable $U
-    sudo systemctl start $U
+    sudo systemctl restart $U
 done
 
