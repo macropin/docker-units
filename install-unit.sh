@@ -7,6 +7,15 @@ UNITS="$*"
 for U in $UNITS; do
     echo ">> Installing $U"
     sudo install -o root -g root -m 644 $U /etc/systemd/system/ 
+
+    # Installing data files
+    for O in $(basename $U .service)*; do
+       if [ "${O}" != "$U"  ]; then
+       echo "Installing $O"
+           sudo install -o root -g root -m 444 $O /etc/systemd/system/
+       fi
+    done
+
 done
 
 sudo systemctl daemon-reload
