@@ -1,8 +1,5 @@
 *filter
 
-
-:DOCKER - [0:0]
-
 :FORWARD ACCEPT [0:0]
 
 -F FORWARD

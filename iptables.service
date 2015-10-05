@@ -1,14 +1,14 @@
 [Unit]
 Description=Packet Filtering for Docker
 DefaultDependencies=no
-After=systemd-sysctl.service
-Before=sysinit.target docker.service
+After=docker.service
+Requires=docker.service
 
 [Service]
 Type=oneshot
+ExecStartPre=-/usr/bin/sleep 2
 ExecStart=/usr/sbin/iptables-restore --noflush /etc/systemd/system/iptables.rules
 ExecReload=/usr/sbin/iptables-restore --noflush /etc/systemd/system/iptables.rules
-ExecStop=/usr/sbin/iptables --flush
 RemainAfterExit=yes
 
 [Install]
