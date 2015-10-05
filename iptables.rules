@@ -1,0 +1,23 @@
+*filter
+
+
+:DOCKER - [0:0]
+
+:FORWARD ACCEPT [0:0]
+
+-F FORWARD
+
+-A FORWARD -o docker0 -j DOCKER
+-A FORWARD -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A FORWARD -i docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+## These are the ports allowed out
+-A FORWARD -i docker0 ! -o docker0 -p tcp -m state --state NEW -m tcp --dport 25 -j ACCEPT
+-A FORWARD -i docker0 ! -o docker0 -p tcp -m state --state NEW -m tcp --dport 53 -j ACCEPT
+-A FORWARD -i docker0 ! -o docker0 -p udp -m state --state NEW -m udp --dport 53 -j ACCEPT
+-A FORWARD -i docker0 ! -o docker0 -p tcp -m state --state NEW -m tcp --dport 22002 -j ACCEPT
+##
+-A FORWARD -i docker0 ! -o docker0 -j REJECT
+-A FORWARD -i docker0 -o docker0 -j ACCEPT
+
+COMMIT
+
