@@ -10,7 +10,7 @@ ExecStartPre=/usr/bin/mkdir -p /mnt/data/%p
 ExecStartPre=/usr/bin/touch /mnt/data/%p/environment
 ExecStartPre=-/usr/bin/docker kill %p
 ExecStartPre=-/usr/bin/docker rm %p
-ExecStart=/usr/bin/docker run --rm --env-file=/mnt/data/%p/environment -p 8000:8000 --name %p --link mariadb %p
+ExecStart=/usr/bin/docker run --rm --env-file=/mnt/data/%p/environment -p 8000:8000 --name voltgrid/mailmanager --link mariadb %p
 ExecStop=/usr/bin/docker stop -t 2 %p
 
 [Install]
