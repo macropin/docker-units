@@ -12,7 +12,7 @@ ExecStartPre=/usr/bin/chown 999:999 /mnt/data/%p/mysql
 ExecStartPre=-/usr/bin/docker kill %p
 ExecStartPre=-/usr/bin/docker rm %p
 ExecStart=/usr/bin/docker run --rm \
-  -m 128M --memory-swap 128M \
+  -m 256M --memory-swap 256M \
   --name %p \
   --env-file=/mnt/data/%p/environment \
   -v /mnt/data/%p/mysql:/var/lib/mysql \
